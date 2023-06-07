@@ -39,6 +39,18 @@ class LivreRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByAuteur($auteur)
+    {
+        return $this->createQueryBuilder('livre')
+            ->leftJoin('livre.auteur', 'auteur')
+            ->andWhere('LOWER(auteur.nom) LIKE :auteur')
+            ->setParameter('auteur', '%'.strtolower($auteur).'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
 //    /**
 //     * @return Livre[] Returns an array of Livre objects
 //     */

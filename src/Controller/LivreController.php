@@ -14,10 +14,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class LivreController extends AbstractController
 {
     #[Route('/', name: 'app_livre_index', methods: ['GET'])]
-    public function index(LivreRepository $livreRepository): Response
+    public function index(LivreRepository $livreRepository, Request $request): Response
     {
+        $auteur = $request->query->get('auteur');
+
+        $livres = [];
+        if ($auteur) {
+            // Recherche des livres par auteur
+            $livres = $livreRepository->findByAuteur($auteur);
+        } else {
+            // Récupération de tous les livres
+            $livres = $livreRepository->findAll();
+        }
+
         return $this->render('livre/index.html.twig', [
-            'livres' => $livreRepository->findAll(),
+            'livres' => $livres,
         ]);
     }
 

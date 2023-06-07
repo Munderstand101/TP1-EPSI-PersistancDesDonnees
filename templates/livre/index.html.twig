@@ -5,6 +5,14 @@
 {% block body %}
     <h1>Livre index</h1>
 
+    <form action="{{ path('app_livre_index') }}" method="get">
+        <div class="form-group">
+            <label for="auteur">Recherche par auteur :</label>
+            <input type="text" id="auteur" name="auteur" class="form-control" value="{{ app.request.query.get('auteur') }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
     <table class="table">
         <thead>
         <tr>
