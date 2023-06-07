@@ -70,9 +70,17 @@ class LivreController extends AbstractController
     public function delete(Request $request, Livre $livre, LivreRepository $livreRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$livre->getId(), $request->request->get('_token'))) {
+            // Dissociate loans from the book
+            foreach ($livre->getEmprunts() as $emprunt) {
+                $livre->removeEmprunt($emprunt);
+                $emprunt->setLivre(null);
+            }
+
+            // Remove the book
             $livreRepository->remove($livre, true);
         }
 
         return $this->redirectToRoute('app_livre_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

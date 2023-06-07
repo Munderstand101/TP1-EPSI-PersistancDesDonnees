@@ -21,7 +21,11 @@
         {% for emprunt in emprunts %}
             <tr>
                 <td>{{ emprunt.id }}</td>
+                {% if emprunt.livre.titre is defined %}
                 <td>{{ emprunt.livre.titre }}</td>
+                    {% else %}
+                        <td>(supprime)</td>
+                {% endif %}
                 <td>{{ emprunt.adherent.nom }}</td>
                 <td>{{ emprunt.dateEmprunt ? emprunt.dateEmprunt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ emprunt.dateFinPrevue ? emprunt.dateFinPrevue|date('Y-m-d H:i:s') : '' }}</td>

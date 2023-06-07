@@ -33,7 +33,7 @@ class Livre
     #[ORM\JoinColumn(nullable: true)]
     private ?Auteur $auteur = null;
 
-    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class)]
     private Collection $emprunts;
 
     public function __construct()
@@ -126,13 +126,11 @@ class Livre
 
     public function removeEmprunt(Emprunt $emprunt): self
     {
-        if ($this->emprunts->removeElement($emprunt)) {
-            // set the owning side to null (unless already changed)
-            if ($emprunt->getLivre() === $this) {
-                $emprunt->setLivre(null);
-            }
+        if ($this->emprunts->contains($emprunt)) {
+            $emprunt->setLivre(null);
         }
 
         return $this;
     }
+
 }
