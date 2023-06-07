@@ -24,7 +24,12 @@
                 <td>{{ livre.titre }}</td>
                 <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ livre.nombreDePages }}</td>
-                <td>{{ livre.category.nom }}</td>
+
+                {% if livre.category.nom is defined %}
+                    <td>{{ livre.category.nom }}</td>
+                {% else %}
+                    <td>(supprime)</td>
+                {% endif %}
                 <td>{{ livre.auteur.nom }}</td>
                 <td>
                     <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>

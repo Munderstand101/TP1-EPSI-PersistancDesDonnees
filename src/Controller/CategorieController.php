@@ -70,9 +70,16 @@ class CategorieController extends AbstractController
     public function delete(Request $request, Categorie $categorie, CategorieRepository $categorieRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+            // Dissociate books from the category
+            foreach ($categorie->getLivres() as $livre) {
+                $categorie->removeLivre($livre);
+            }
+
+            // Remove the category
             $categorieRepository->remove($categorie, true);
         }
 
         return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

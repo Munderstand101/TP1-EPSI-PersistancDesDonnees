@@ -18,7 +18,7 @@ class Categorie
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Livre::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Livre::class)]
     private Collection $livres;
 
     public function __construct()
@@ -63,13 +63,14 @@ class Categorie
 
     public function removeLivre(Livre $livre): self
     {
-        if ($this->livres->removeElement($livre)) {
-            // set the owning side to null (unless already changed)
-            if ($livre->getCategory() === $this) {
-                $livre->setCategory(null);
-            }
+        if ($this->livres->contains($livre)) {
+            $this->livres->removeElement($livre);
+
+            // remove the association from the livre as well
+            $livre->setCategory(null);
         }
 
         return $this;
     }
+
 }
