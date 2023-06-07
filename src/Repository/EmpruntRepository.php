@@ -57,6 +57,18 @@ class EmpruntRepository extends ServiceEntityRepository
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
+
+    public function findEmpruntsEnCours()
+    {
+        $currentDate = new \DateTime();
+
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.dateFinPrevue > :currentDate')
+            ->setParameter('currentDate', $currentDate)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Emprunt[] Returns an array of Emprunt objects
 //     */

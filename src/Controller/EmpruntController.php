@@ -15,6 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/emprunt')]
 class EmpruntController extends AbstractController
 {
+
+    #[Route('/en_cours', name: 'app_emprunts_en_cours_index', methods: ['GET'])]
+    public function enCours(EmpruntRepository $empruntRepository): Response
+    {
+        $empruntsEnCours = $empruntRepository->findEmpruntsEnCours();
+
+        return $this->render('emprunt/en_cours.html.twig', [
+            'emprunts' => $empruntsEnCours,
+        ]);
+    }
+
     #[Route('/', name: 'app_emprunt_index', methods: ['GET', 'POST'])]
     public function index(Request $request, EmpruntRepository $empruntRepository): Response
     {

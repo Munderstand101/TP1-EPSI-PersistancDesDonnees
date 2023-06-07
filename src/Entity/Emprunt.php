@@ -11,24 +11,24 @@ class Emprunt
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_emprunt = null;
+    #[ORM\Column(name: "date_emprunt", type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateEmprunt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_fin_prevue = null;
+    #[ORM\Column(name: "date_fin_prevue", type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateFinPrevue = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date_retour = null;
+    #[ORM\Column(name: "date_retour", type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateRetour = null;
 
-    #[ORM\ManyToOne(inversedBy: 'emprunts')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(name: "adherent_id", referencedColumnName: "id", nullable: true)]
     private ?Adherent $adherent = null;
 
-    #[ORM\ManyToOne(inversedBy: 'emprunts')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Livre::class, inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(name: "livre_id", referencedColumnName: "id", nullable: true)]
     private ?Livre $livre = null;
 
     public function getId(): ?int
@@ -38,27 +38,28 @@ class Emprunt
 
     public function getDateEmprunt(): ?\DateTimeInterface
     {
-        return $this->date_emprunt;
+        return $this->dateEmprunt;
     }
 
-    public function setDateEmprunt(\DateTimeInterface $date_emprunt): self
+    public function setDateEmprunt(?\DateTimeInterface $dateEmprunt): self
     {
-        $this->date_emprunt = $date_emprunt;
+        $this->dateEmprunt = $dateEmprunt;
 
         return $this;
     }
 
     public function getDateFinPrevue(): ?\DateTimeInterface
     {
-        return $this->date_fin_prevue;
+        return $this->dateFinPrevue;
     }
 
-    public function setDateFinPrevue(\DateTimeInterface $date_fin_prevue): self
+    public function setDateFinPrevue(?\DateTimeInterface $dateFinPrevue): self
     {
-        $this->date_fin_prevue = $date_fin_prevue;
+        $this->dateFinPrevue = $dateFinPrevue;
 
         return $this;
     }
+
 
     public function getDateRetour(): ?\DateTimeInterface
     {

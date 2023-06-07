@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Emprunts en cours{% endblock %}
+
+{% block body %}
+    <h1>Emprunts en cours</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Livre</th>
+            <th>Adhérent</th>
+            <th>Date_emprunt</th>
+            <th>Date_fin_prévue</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for emprunt in emprunts %}
+            <tr>
+                <td>{{ emprunt.id }}</td>
+                {% if emprunt.livre.titre is defined %}
+                    <td>{{ emprunt.livre.titre }}</td>
+                {% else %}
+                    <td>(supprimé)</td>
+                {% endif %}
+                <td>{{ emprunt.adherent.nom }}</td>
+                <td>{{ emprunt.dateEmprunt ? emprunt.dateEmprunt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ emprunt.dateFinPrevue ? emprunt.dateFinPrevue|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_emprunt_show', {'id': emprunt.id}) }}">show</a>
+                    <a href="{{ path('app_emprunt_edit', {'id': emprunt.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucun emprunt en cours.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
