@@ -9,6 +9,8 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Adherent</th>
+                <th>Livre</th>
                 <th>Date_emprunt</th>
                 <th>Date_fin_prevue</th>
                 <th>Date_retour</th>
@@ -19,6 +21,8 @@
         {% for emprunt in emprunts %}
             <tr>
                 <td>{{ emprunt.id }}</td>
+                <td>{{ emprunt.livre.titre }}</td>
+                <td>{{ emprunt.adherent.nom }}</td>
                 <td>{{ emprunt.dateEmprunt ? emprunt.dateEmprunt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ emprunt.dateFinPrevue ? emprunt.dateFinPrevue|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ emprunt.dateRetour ? emprunt.dateRetour|date('Y-m-d H:i:s') : '' }}</td>

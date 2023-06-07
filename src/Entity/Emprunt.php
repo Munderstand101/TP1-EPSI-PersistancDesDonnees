@@ -24,9 +24,11 @@ class Emprunt
     private ?\DateTimeInterface $date_retour = null;
 
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Adherent $adherent = null;
 
     #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Livre $livre = null;
 
     public function getId(): ?int

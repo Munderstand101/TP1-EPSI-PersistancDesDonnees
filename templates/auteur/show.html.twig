@@ -19,6 +19,12 @@
                 <th>Prenom</th>
                 <td>{{ auteur.prenom }}</td>
             </tr>
+            <tr>
+                <th>Livres</th>
+                {% for livre in auteur.livres %}
+                    {{ livre.titre }}
+                {% endfor %}
+            </tr>
         </tbody>
     </table>
 

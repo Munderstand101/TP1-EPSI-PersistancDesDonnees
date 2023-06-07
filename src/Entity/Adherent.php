@@ -28,7 +28,7 @@ class Adherent
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_inscription = null;
 
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Emprunt::class)]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Emprunt::class, cascade: ['remove'])]
     private Collection $emprunts;
 
     public function __construct()

@@ -12,6 +12,8 @@
                 <th>Titre</th>
                 <th>Date_de_parution</th>
                 <th>Nombre_de_pages</th>
+                <th>Categorie</th>
+                <th>Autheur</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +24,8 @@
                 <td>{{ livre.titre }}</td>
                 <td>{{ livre.dateDeParution ? livre.dateDeParution|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ livre.nombreDePages }}</td>
+                <td>{{ livre.category.nom }}</td>
+                <td>{{ livre.auteur.nom }}</td>
                 <td>
                     <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
                     <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>

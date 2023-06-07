@@ -26,12 +26,14 @@ class Livre
     private ?int $nombre_de_pages = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Categorie $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Auteur $auteur = null;
 
-    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class)]
+    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: Emprunt::class, cascade: ['remove'])]
     private Collection $emprunts;
 
     public function __construct()

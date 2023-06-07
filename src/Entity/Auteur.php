@@ -21,7 +21,7 @@ class Auteur
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Livre::class)]
+    #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Livre::class, cascade: ['remove'])]
     private Collection $livres;
 
     public function __construct()
