@@ -39,6 +39,24 @@ class EmpruntRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * Retourne le nombre d'emprunts sur une plage de dates donnée.
+     *
+     * @param \DateTimeInterface $start
+     * @param \DateTimeInterface $end
+     * @return int
+     */
+    public function countEmpruntsBetweenDates(\DateTimeInterface $start, \DateTimeInterface $end): int
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->select('COUNT(e)')
+            ->where('e.date_emprunt BETWEEN :start AND :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 //    /**
 //     * @return Emprunt[] Returns an array of Emprunt objects
 //     */

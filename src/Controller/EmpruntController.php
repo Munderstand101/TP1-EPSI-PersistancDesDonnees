@@ -6,6 +6,8 @@ use App\Entity\Emprunt;
 use App\Form\EmpruntType;
 use App\Repository\EmpruntRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,13 +15,51 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/emprunt')]
 class EmpruntController extends AbstractController
 {
-    #[Route('/', name: 'app_emprunt_index', methods: ['GET'])]
-    public function index(EmpruntRepository $empruntRepository): Response
+    #[Route('/', name: 'app_emprunt_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, EmpruntRepository $empruntRepository): Response
     {
+        // Créer le formulaire pour la plage de dates
+        $form = $this->createFormBuilder()
+            ->add('start', DateType::class, [
+                'label' => 'Date de début',
+                'widget' => 'single_text',
+            ])
+            ->add('end', DateType::class, [
+                'label' => 'Date de fin',
+                'widget' => 'single_text',
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Rechercher',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        $emprunts = $empruntRepository->findAll(); // Récupérer tous les emprunts (commun aux deux cas)
+
+        // Si le formulaire est soumis et valide, récupérer les dates et effectuer la recherche
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $start = $data['start'];
+            $end = $data['end'];
+
+            $count = $empruntRepository->countEmpruntsBetweenDates($start, $end);
+
+            // Rendu avec les emprunts filtrés par plage de dates
+            return $this->render('emprunt/index.html.twig', [
+                'emprunts' => $emprunts,
+                'form' => $form->createView(),
+                'count' => $count,
+            ]);
+        }
+
+        // Rendu par défaut avec tous les emprunts
         return $this->render('emprunt/index.html.twig', [
-            'emprunts' => $empruntRepository->findAll(),
+            'emprunts' => $emprunts,
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/new', name: 'app_emprunt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EmpruntRepository $empruntRepository): Response

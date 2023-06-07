@@ -5,26 +5,36 @@
 {% block body %}
     <h1>Emprunt index</h1>
 
+    {{ form_start(form) }}
+    {{ form_row(form.start) }}
+    {{ form_row(form.end) }}
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+
+    {% if count is defined %}
+    <p>{{ count }} emprunts sur la plage de dates spécifiée.</p>
+    {% endif %}
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Adherent</th>
-                <th>Livre</th>
-                <th>Date_emprunt</th>
-                <th>Date_fin_prevue</th>
-                <th>Date_retour</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Livre</th>
+            <th>Adherent</th>
+            <th>Date_emprunt</th>
+            <th>Date_fin_prevue</th>
+            <th>Date_retour</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for emprunt in emprunts %}
             <tr>
                 <td>{{ emprunt.id }}</td>
                 {% if emprunt.livre.titre is defined %}
-                <td>{{ emprunt.livre.titre }}</td>
-                    {% else %}
-                        <td>(supprime)</td>
+                    <td>{{ emprunt.livre.titre }}</td>
+                {% else %}
+                    <td>(supprimé)</td>
                 {% endif %}
                 <td>{{ emprunt.adherent.nom }}</td>
                 <td>{{ emprunt.dateEmprunt ? emprunt.dateEmprunt|date('Y-m-d H:i:s') : '' }}</td>
@@ -37,11 +47,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="7">Aucun enregistrement trouvé.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_emprunt_new') }}">Create new</a>
+    <a href="{{ path('app_emprunt_new') }}">Créer un nouvel emprunt</a>
 {% endblock %}
