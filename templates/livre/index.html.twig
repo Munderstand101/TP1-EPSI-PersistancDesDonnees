@@ -7,15 +7,16 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Date_de_parution</th>
-                <th>Nombre_de_pages</th>
-                <th>Categorie</th>
-                <th>Autheur</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Titre</th>
+            <th>Date_de_parution</th>
+            <th>Nombre_de_pages</th>
+            <th>Categorie</th>
+            <th>Auteur</th>
+            <th>Nombre d'emprunts</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for livre in livres %}
@@ -28,9 +29,10 @@
                 {% if livre.category.nom is defined %}
                     <td>{{ livre.category.nom }}</td>
                 {% else %}
-                    <td>(supprime)</td>
+                    <td>(supprimé)</td>
                 {% endif %}
                 <td>{{ livre.auteur.nom }}</td>
+                <td>{{ livre.emprunts|length }}</td>
                 <td>
                     <a href="{{ path('app_livre_show', {'id': livre.id}) }}">show</a>
                     <a href="{{ path('app_livre_edit', {'id': livre.id}) }}">edit</a>
@@ -38,7 +40,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
